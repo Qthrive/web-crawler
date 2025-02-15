@@ -1,0 +1,14 @@
+<bookstore>
+    <book>
+        <title lang="en">Harry Potter</title>
+        <price>29.99</price>
+    </book>
+    <book>
+        <title lang="en">Learning Python</title>
+        <price>39.99</price>
+    </book>
+    <book>
+        <title lang="en">Data Science Handbook</title>
+        <price>49.99</price>
+    </book>
+</bookstore>

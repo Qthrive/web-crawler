@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://video.qq.com/cookie/sync_qqnews.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+  document.domain = "qq.com";
+  var Cookie = {
+    set: function (name, value, domain, path, hour) {
+      if (hour) {
+        var today = new Date();
+        var expire = new Date();
+        expire.setTime(today.getTime() + 3600000 * hour);
+      }
+      document.cookie = name + "=" + value + "; " + (hour ? ("expires=" + expire.toGMTString() + "; ") : "") + (path ? ("path=" + path + "; ") : "path=/; ") + (domain ? ("domain=" + domain + ";") : ("domain=" + window.location.host + ";"));
+      return true;
+    },
+    get: function (name, cookies) {
+      var r = new RegExp("(?:^|;+|\\s+)" + name + "=([^;]*)");
+      var m = (cookies || document.cookie).match(r);
+      return (!m ? "" : m[1]);
+    },
+    del: function (name, domain, path) {
+      var exp = new Date();
+      exp.setTime(exp.getTime() - 1);
+      document.cookie = name + "=; expires=" + exp.toGMTString() + ";" + (path ? ("path=" + path + "; ") : "path=/; ") + (domain ? ("domain=" + domain + ";") : ("domain=" + window.location.host + ";"));
+    }
+  };
+  var UA = navigator.userAgent
+  var isApp = /(QQLive|WeTV)(HD|Kid)?(Browser|_MAC)?[\s/]*(\d+(\.\d+)*)/i.test(UA)
+  var VIDEO_QQ_COOKIE = [
+    'vqq_appid',
+    'vqq_openid',
+    'vqq_access_token',
+    'vqq_vuserid',
+    'vqq_vusession',
+  ];
+  var VIDEO_WX_COOKIE = [
+    'appid',
+    'openid',
+    'access_token',
+    'refresh_token',
+    'vuserid',
+    'vusession'
+  ];
+  var VIDEO_COOKIES = [
+    'main_login',
+    '_video_qq_version',
+    '_video_qq_access_token',
+    '_video_qq_openid',
+    '_video_qq_vuserid',
+    '_video_qq_vusession',
+    '_video_qq_refresh_token',
+    '_video_qq_main_login',
+    '_video_qq_login_time_init',
+    '_video_qq_next_refresh_time'
+  ].concat(VIDEO_QQ_COOKIE, VIDEO_WX_COOKIE);
+
+  function clearCookies() {
+    for (var i = 0, len = VIDEO_COOKIES.length; i < len; i++) {
+      Cookie.del(VIDEO_COOKIES[i], '.video.qq.com', '/')
+    }
+  }
+
+  // 清除指定账号类型 cookie
+  function clearCookie(type) {
+    if (type !== 'qq' && type !== 'wx') {
+      clearCookies();
+      return;
+    }
+    var cookies = type === 'qq' ? VIDEO_QQ_COOKIE : VIDEO_WX_COOKIE;
+    for (var i = 0, len = cookies.length; i < len; i++) {
+      Cookie.del(cookies[i], '.video.qq.com', '/')
+    }
+  }
+
+  function syncCookies(cookies) {
+    if (!cookies || ['qq', 'wx'].indexOf(cookies.main_login) < 0) return
+    var loginType = cookies.main_login
+    for (var key in cookies) {
+      var cKey = key
+      if (cKey !== 'main_login') {
+        cKey = (loginType === 'qq' ? 'vqq_' : '') + cKey
+      }
+      Cookie.set(cKey, cookies[key], '.video.qq.com', '/', 24);
+    }
+  }
+  
+  var REG_SPORTS_SITE = /https?:\/\/((.*?)\.)?qq\.com/
+  window.addEventListener('message', function(e) {
+    if (REG_SPORTS_SITE.test(e.origin) && e.data) {
+      switch(e.data.event) {
+        case 'logout':
+          clearCookies();
+          break;
+        case 'clearCookie':
+          clearCookie(e.data.type);
+          break;
+        case 'syncCookie':
+          clearCookies();
+          syncCookies(e.data.cookies);
+          break;
+      }
+    }
+  }, false);
+  </script>
+
+</body></html>
