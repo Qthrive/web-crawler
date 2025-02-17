@@ -5,15 +5,19 @@ import sqlite3
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
+# 获取保存文件的路径
 current_dir = os.path.dirname(os.path.abspath(__file__))
 path = os.path.join(current_dir,'weather')
 
+# 中国天气网，武汉7日天气
 url = 'https://www.weather.com.cn/weather/101200101.shtml'
 
+# 请求页面，防止乱码
 response = requests.get(url)
 response.encoding = 'utf-8'
 html = response.text
 
+# 解析所需数据
 tree = etree.HTML(html)
 
 date = tree.xpath('//li[@class]/h1/text()')
@@ -32,6 +36,7 @@ low_tem = [tem.replace('℃','') for tem in origin_low_tem]
 win = tree.xpath('//li[@class]/p[@class = "win"]/i/text()')
 # print(win)
 
+# 整合数据
 weather_data = {
     "date":date,
     "wea":wea,
@@ -42,9 +47,12 @@ weather_data = {
 
 save_path = os.path.join(path,'weather.db')
 
+# 写入数据库的函数
 def save_to_db(data,save_path,city = "武汉"):
     conn = sqlite3.connect(save_path)
     cursor = conn.cursor()
+    
+    # 创建表
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS weather (
             city TEXT NOT NULL,
@@ -69,7 +77,7 @@ def save_to_db(data,save_path,city = "武汉"):
             values(?,?,?,?,?,?,?)
     ''',(city,data["date"][i],data["wea"][i],data["high_temp"][i],data["low_temp"][i],data["wind"][i],current_time))
     
-
+    # 断开连接
     conn.commit()
     conn.close()
 
