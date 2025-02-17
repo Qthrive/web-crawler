@@ -1,0 +1,51 @@
+[
+  {
+    "date": "17日（今天）",
+    "weather": "小雨转多云",
+    "high_temp": "11℃",
+    "low_temp": "0℃",
+    "wind": "<3级"
+  },
+  {
+    "date": "18日（明天）",
+    "weather": "多云转小雨",
+    "high_temp": "12℃",
+    "low_temp": "5℃",
+    "wind": "<3级"
+  },
+  {
+    "date": "19日（后天）",
+    "weather": "小雨转阴",
+    "high_temp": "7℃",
+    "low_temp": "4℃",
+    "wind": "<3级"
+  },
+  {
+    "date": "20日（周四）",
+    "weather": "多云",
+    "high_temp": "10℃",
+    "low_temp": "7℃",
+    "wind": "<3级"
+  },
+  {
+    "date": "21日（周五）",
+    "weather": "多云转阴",
+    "high_temp": "10℃",
+    "low_temp": "6℃",
+    "wind": "<3级"
+  },
+  {
+    "date": "22日（周六）",
+    "weather": "多云转晴",
+    "high_temp": "10℃",
+    "low_temp": "5℃",
+    "wind": "<3级"
+  },
+  {
+    "date": "23日（周日）",
+    "weather": "阴",
+    "high_temp": "9℃",
+    "low_temp": "6℃",
+    "wind": "<3级"
+  }
+]
